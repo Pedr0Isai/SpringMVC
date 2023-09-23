@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.bank</groupId>
-	<artifactId>SpringMVC/artifactId>
+	<artifactId>SpringMVC</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>SpringMVC</name>
 	<description>ejemplo de un flujo condicional de spring batch</description>
