@@ -1,4 +1,4 @@
-package com.bank.exception;
+package com.bank.handler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,40 +15,37 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.bank.dto.ResponseDto;
+import com.bank.dto.ResultDto;
 
 @ControllerAdvice
-public class ValidationExceptionHandler {
+public class ApiExceptionHandler {
 
 	@ExceptionHandler(PropertyValueException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
-	public ResponseEntity<ResponseDto> badPropertyValue(PropertyValueException ex) {
-		ResponseDto response = new ResponseDto();
-		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-		response.setMensaje(ex.getLocalizedMessage());
+	public ResponseEntity<ResultDto> badPropertyValue(PropertyValueException ex) {
+		ResultDto result = new ResultDto("Operación incorrecta", ex.getLocalizedMessage());
 		if (ex.getLocalizedMessage().startsWith("not-null property")) {
-			response.setMensaje(String.format("La propiedad '%s' no puede ser nula", ex.getPropertyName()));
+			result.setMessage(String.format("La propiedad '%s' no puede ser nula", ex.getPropertyName()));
 		}
 		if (ex.getLocalizedMessage().startsWith("not-blank property")) {
-			response.setMensaje(String.format("La propiedad '%s' debe tener texto", ex.getPropertyName()));
+			result.setMessage(String.format("La propiedad '%s' debe tener texto", ex.getPropertyName()));
 		}
-		return ResponseEntity.badRequest().body(response);
+		return ResponseEntity.badRequest().body(result);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public ResponseEntity<ResponseDto> badRequest(MethodArgumentNotValidException ex, HttpServletRequest request) {
-		ResponseDto response = new ResponseDto(HttpStatus.BAD_REQUEST.value(), "Petición incorrecta");
-		response.setPath(request.getRequestURI());
+	public ResponseEntity<ResultDto> badRequest(MethodArgumentNotValidException ex, HttpServletRequest request) {
+		ResultDto response = new ResultDto("KO");
 		Map<String, Object> errors = new HashMap<>();
 		ex.getBindingResult().getAllErrors().forEach(error -> {
 			String fieldName = ((FieldError) error).getField();
 			String errorMessage = error.getDefaultMessage();
 			errors.put(fieldName, errorMessage);
 		});
-		response.setError(errors);
+		response.setErrors(errors);
 		return ResponseEntity.badRequest().body(response);
 	}
 }

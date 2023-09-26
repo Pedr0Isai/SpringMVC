@@ -23,4 +23,5 @@ public class ApplicationConfig {
 		dataSource.setPassword("sa");
 		return dataSource;
 	}
+
 }

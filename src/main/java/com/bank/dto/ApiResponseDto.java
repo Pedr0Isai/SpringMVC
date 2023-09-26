@@ -2,41 +2,31 @@ package com.bank.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(Include.NON_NULL)
-public class ResponseDto implements Serializable {
+public class ApiResponseDto implements Serializable {
 
 	private LocalDateTime timestamp;
 	
 	protected int status;
 	
-	protected Map<String, Object> error;
-	
-	protected String mensaje;
-	
 	protected String path;
 	
-	protected Map<String, Object> detalles;
+	protected Object response;
 	
-	
-	public ResponseDto() {
-		this.status = 200;
-		this.mensaje = "Operación correcta";
-		this.timestamp = LocalDateTime.now();
-	}
-	
-	public ResponseDto(int result, String mensaje) {
-		this.status = result;
-		this.mensaje = mensaje;
+	public ApiResponseDto(int status, String path) {
+		this.status = status;
+		this.path = path;
 		this.timestamp = LocalDateTime.now();
 	}
 

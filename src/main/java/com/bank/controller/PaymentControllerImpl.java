@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bank.dto.ResponseDto;
-import com.bank.dto.TransferPaymentDto;
+import com.bank.dto.ResultDto;
+import com.bank.dto.TransferPaymentInDto;
 import com.bank.model.TransferPaymentEntity;
 import com.bank.service.IPaymentService;
 
@@ -25,8 +25,8 @@ public class PaymentControllerImpl implements IPaymentController {
 
 	@Override
 	@ApiOperation(value = "Servicio realiza la transferencia de pago", notes = "Devuelve el resultado de la operación")
-	public ResponseEntity<ResponseDto> transferPayment(TransferPaymentDto dto) {
-		ResponseDto response = new ResponseDto();
+	public ResponseEntity<ResultDto> transferPayment(TransferPaymentInDto dto) {
+		ResultDto result = new ResultDto("OK", "Operación correcta");
 		String transactionId = UUID.randomUUID().toString();
 		TransferPaymentEntity transferPaymentEntity = TransferPaymentEntity.builder()
 				.id(transactionId)
@@ -39,9 +39,9 @@ public class PaymentControllerImpl implements IPaymentController {
 		service.altaEntidad(transferPaymentEntity);
 		Map<String, Object> info = new HashMap<>();
 		info.put("transaction_id", transactionId);
-		response.setDetalles(info);
+		result.setDetails(info);
 		
-		return ResponseEntity.ok(response);
+		return ResponseEntity.ok(result);
 	}
 
 }

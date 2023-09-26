@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(Include.NON_NULL)
-public class TransferPaymentDto implements Serializable {
+public class TransferPaymentInDto implements Serializable {
 
 	@NotNull
 	@JsonProperty("avaiable_balance")
