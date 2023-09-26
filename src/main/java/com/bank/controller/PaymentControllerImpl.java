@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,18 +12,20 @@ import com.bank.dto.TransferPaymentInDto;
 import com.bank.model.TransferPaymentEntity;
 import com.bank.service.IPaymentService;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
-@Api(value="payments",description = "servicios que realizan transferencia de pago")
+/** RequiredArgsConstructor vuelve las variables final propias del constructor; hace Autowired */
+@Tag(name = "Payments API", description = "servicios que realizan transferencias de pagos")
 @RestController
+@RequiredArgsConstructor
 public class PaymentControllerImpl implements IPaymentController {
 
-	@Autowired
-	private IPaymentService service;
+	private final IPaymentService service;
 
 	@Override
-	@ApiOperation(value = "Servicio realiza la transferencia de pago", notes = "Devuelve el resultado de la operación")
+	@Operation(summary = "Realiza la transferencia de pago", description = "Devuelve el resultado de la operación")
 	public ResponseEntity<ResultDto> transferPayment(TransferPaymentInDto dto) {
 		ResultDto result = new ResultDto("OK", "Operación correcta");
 		String transactionId = UUID.randomUUID().toString();

@@ -18,7 +18,7 @@ public class ApplicationConfig {
 	DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.h2.Driver");
-		dataSource.setUrl("jdbc:h2:file:C:/h2db/batchFlow");
+		dataSource.setUrl("jdbc:h2:file:C:/h2db/springMvc");
 		dataSource.setUsername("sa");
 		dataSource.setPassword("sa");
 		return dataSource;

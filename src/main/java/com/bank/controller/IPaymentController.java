@@ -22,7 +22,7 @@ public interface IPaymentController {
 	@PostMapping(value =  "/transfer" ,  produces = { "application/hal+json" })
 	@ResponseStatus(value = HttpStatus.CREATED)
 	@ApiResponses(value = { 
-			@ApiResponse(code = 201, message = "Created", response = ResultDto.class),
+			@ApiResponse(code = 201, message = "Created", response = ApiResponseDto.class),
 			@ApiResponse(code = 400, message = "Bad Request", response = ApiResponseDto.class),
 			@ApiResponse(code = 401, message = "Unauthorized", response = ApiResponseDto.class), 
 			@ApiResponse(code = 403, message = "Access denied", response = ApiResponseDto.class),

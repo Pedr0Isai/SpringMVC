@@ -5,12 +5,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpResponse;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import com.bank.dto.ApiResponseDto;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
 
 	/**
@@ -25,7 +25,7 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
 	 * @return true, si es verdadero se aplica el advice para la respuesta en curso
 	 */
 	@Override
-	public boolean supports(MethodParameter returnType, Class converterType) {
+	public boolean supports(MethodParameter returnType, @SuppressWarnings("rawtypes") Class converterType) {
 		/**
 		 * Se pueden agregar condiciones basadas en returnType y converterType. Si las
 		 * condiciones se cumplen, se devuelve true para indicar que el advice debe
@@ -38,13 +38,20 @@ public class ApiResponseAdvice implements ResponseBodyAdvice<Object> {
 		 * ejemplo2. Verificar si el convertidor es de tipo MappingJackson2HttpMessageConverter: 
 		 * return MappingJackson2HttpMessageConverter.class.isAssignableFrom(converterType);
 		 */
-		return true;
+		boolean continua = false;
+		/** Se obtiene el nombre del package desde el cual se lanzó el response*/
+		String packageName = returnType.getExecutable().getDeclaringClass().getPackageName();
+		/** Verifica si el packageName contiene 'com.bank' */
+		if(packageName.contains("com.bank")) {
+			continua = true;
+		}
+		return continua;
 	}
 
 	/** Este método se llama antes de escribir el cuerpo de la respuesta */
 	@Override
 	public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
-			Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+			@SuppressWarnings("rawtypes") Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
 		/** Se obtiene el response del servlet */
 		ServletServerHttpResponse servletResponse = (ServletServerHttpResponse) response;
 		/** Se modifica el cuerpo de ApiResponseDto antes de que se envíe */
